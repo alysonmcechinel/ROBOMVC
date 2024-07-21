@@ -42,7 +42,9 @@
     {
         RotacaoMenos90,
         RotacaoMenos45,
-        EmRepouso
+        EmRepouso,
+        RotacaoPara45,
+        RotacaoPara90
     }
 
     public enum InclinacaoCabeca

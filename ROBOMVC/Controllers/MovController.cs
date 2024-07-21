@@ -39,7 +39,11 @@ public class MovController : Controller
 
         var erro = _roboAppService.ValidarMovimento(estadoAtual, viewModel);
         if (erro != null)
+        {
+            viewModel = _roboAppService.EstadoIncialRobo();
+            HttpContext.Session.Set(RoboSessionKey, viewModel);
             return BadRequest(erro);
+        }            
 
         HttpContext.Session.Set(RoboSessionKey, viewModel);
 
