@@ -43,10 +43,10 @@
                 <legend>Braço Esquerdo</legend>
                 <div>
                     <label for="LeftElbow">Cotovelo:</label>
-                <select id="LeftElbow" name="LeftArm.Elbow">
-                    @foreach (var elbow in Enum.GetValues(typeof(Elbow)).Cast<Elbow>())
+                    <select id="LeftElbow" name="LeftArm.Elbow">
+                        @foreach (var elbow in Enum.GetValues(typeof(Elbow)).Cast<Elbow>())
                         {
-                        <option value="@elbow">@elbow.GetDisplayName()</option>
+                            <option value="@elbow">@elbow.GetDisplayName()</option>
                         }
                     </select>
                 </div>
@@ -66,16 +66,16 @@
                 <div>
                     <label for="RightElbow">Cotovelo:</label>
                     <select id="RightElbow" name="RightArm.Elbow">
-                    @foreach (var elbow in Enum.GetValues(typeof(Elbow)).Cast<Elbow>())
+                        @foreach (var elbow in Enum.GetValues(typeof(Elbow)).Cast<Elbow>())
                         {
-                        <option value="@elbow">@elbow.GetDisplayName()</option>
+                            <option value="@elbow">@elbow.GetDisplayName()</option>
                         }
                     </select>
                 </div>
                 <div>
                     <label for="RightWrist">Pulso:</label>
                     <select id="RightWrist" name="RightArm.Wrist">
-                    @foreach (var wrist in Enum.GetValues(typeof(Wrist)).Cast<Wrist>())
+                        @foreach (var wrist in Enum.GetValues(typeof(Wrist)).Cast<Wrist>())
                         {
                             <option value="@wrist">@wrist.GetDisplayName()</option>
                         }
