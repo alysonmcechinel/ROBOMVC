@@ -1,12 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using ROBOMVC.Models;
 using ROBOMVC.Service;
+using ROBOMVC.Session;
 
 namespace ROBOMVC.Controllers;
 
 public class MovController : Controller
 {
     private readonly RoboAppService _roboAppService;
+    private const string RoboSessionKey = "RoboEstado";
 
     public MovController(RoboAppService roboAppService)
     {
@@ -16,24 +19,12 @@ public class MovController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        var viewModel = new RoboViewModel
-        {
-            Cabeca = new CabecaViewModel
-            {
-                Rotacao = RotacaoCabeca.EmRepouso,
-                Inclinacao = InclinacaoCabeca.EmRepouso
-            },
-            BracoEsquerdo = new BracoViewModel
-            {
-                Cotovelo = Cotovelo.EmRepouso,
-                Pulso = Pulso.EmRepouso
-            },
-            BracoDireito = new BracoViewModel
-            {
-                Cotovelo = Cotovelo.EmRepouso,
-                Pulso = Pulso.EmRepouso
-            }
-        };
+        var viewModel = HttpContext.Session.Get<RoboViewModel>(RoboSessionKey);
+
+        if (viewModel == null)
+            viewModel = _roboAppService.EstadoIncialRobo();
+
+        HttpContext.Session.Set(RoboSessionKey, viewModel);
 
         return View(viewModel);
     }
@@ -44,13 +35,13 @@ public class MovController : Controller
         if (viewModel == null)
             return BadRequest("Dados inválidos");
 
-        var estadoAtual = _roboAppService.ObterEstadoAtualRobo();
+        var estadoAtual = HttpContext.Session.Get<RoboViewModel>(RoboSessionKey);
 
         var erro = _roboAppService.ValidarMovimento(estadoAtual, viewModel);
         if (erro != null)
-        {
             return BadRequest(erro);
-        }
+
+        HttpContext.Session.Set(RoboSessionKey, viewModel);
 
         return AtualizarComandos(viewModel);
     }

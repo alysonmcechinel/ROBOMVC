@@ -4,36 +4,14 @@ namespace ROBOMVC.Service;
 
 public class RoboAppService
 {
-    public RoboViewModel ObterEstadoAtualRobo()
-    {
-        // Aqui você deve retornar o estado atual do robô, por exemplo, pode ser recuperado de um banco de dados ou outra fonte de dados.
-        // Para simplificação, estou retornando um estado inicial em repouso.
-        return new RoboViewModel
+    public RoboViewModel EstadoIncialRobo() =>
+        new RoboViewModel
         {
             Cabeca = new CabecaViewModel { Rotacao = RotacaoCabeca.EmRepouso, Inclinacao = InclinacaoCabeca.EmRepouso },
             BracoEsquerdo = new BracoViewModel { Cotovelo = Cotovelo.EmRepouso, Pulso = Pulso.EmRepouso },
             BracoDireito = new BracoViewModel { Cotovelo = Cotovelo.EmRepouso, Pulso = Pulso.EmRepouso }
         };
-    }
-
-    public bool VerificarProgressoDeEstados(RoboViewModel estadoAtual, RoboViewModel novoEstado)
-    {
-        return VerificarProgressaoDeEstado(estadoAtual.Cabeca.Rotacao, novoEstado.Cabeca.Rotacao) &&
-               VerificarProgressaoDeEstado(estadoAtual.Cabeca.Inclinacao, novoEstado.Cabeca.Inclinacao) &&
-               VerificarProgressaoDeEstado(estadoAtual.BracoEsquerdo.Cotovelo, novoEstado.BracoEsquerdo.Cotovelo) &&
-               VerificarProgressaoDeEstado(estadoAtual.BracoEsquerdo.Pulso, novoEstado.BracoEsquerdo.Pulso) &&
-               VerificarProgressaoDeEstado(estadoAtual.BracoDireito.Cotovelo, novoEstado.BracoDireito.Cotovelo) &&
-               VerificarProgressaoDeEstado(estadoAtual.BracoDireito.Pulso, novoEstado.BracoDireito.Pulso);
-    }
-
-    private bool VerificarProgressaoDeEstado<T>(T estadoAtual, T novoEstado) where T : Enum
-    {
-        var estados = Enum.GetValues(typeof(T)).Cast<T>().ToList();
-        var indexAtual = estados.IndexOf(estadoAtual);
-        var indexNovo = estados.IndexOf(novoEstado);
-
-        return Math.Abs(indexAtual - indexNovo) <= 1;
-    }
+    
 
     public string ValidarMovimento(RoboViewModel estadoAtual, RoboViewModel viewModel)
     {
@@ -63,5 +41,27 @@ public class RoboAppService
 
         return null;
     }
+
+    // Privates
+
+    private bool VerificarProgressoDeEstados(RoboViewModel estadoAtual, RoboViewModel novoEstado)
+    {
+        return VerificarProgressaoDeEstado(estadoAtual.Cabeca.Rotacao, novoEstado.Cabeca.Rotacao) &&
+               VerificarProgressaoDeEstado(estadoAtual.Cabeca.Inclinacao, novoEstado.Cabeca.Inclinacao) &&
+               VerificarProgressaoDeEstado(estadoAtual.BracoEsquerdo.Cotovelo, novoEstado.BracoEsquerdo.Cotovelo) &&
+               VerificarProgressaoDeEstado(estadoAtual.BracoEsquerdo.Pulso, novoEstado.BracoEsquerdo.Pulso) &&
+               VerificarProgressaoDeEstado(estadoAtual.BracoDireito.Cotovelo, novoEstado.BracoDireito.Cotovelo) &&
+               VerificarProgressaoDeEstado(estadoAtual.BracoDireito.Pulso, novoEstado.BracoDireito.Pulso);
+    }
+
+    private bool VerificarProgressaoDeEstado<T>(T estadoAtual, T novoEstado) where T : Enum
+    {
+        var estados = Enum.GetValues(typeof(T)).Cast<T>().ToList();
+        var indexAtual = estados.IndexOf(estadoAtual);
+        var indexNovo = estados.IndexOf(novoEstado);
+
+        return Math.Abs(indexAtual - indexNovo) <= 1;
+    }
+
 }
 
