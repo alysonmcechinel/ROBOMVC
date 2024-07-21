@@ -1,57 +1,93 @@
-﻿namespace ROBOMVC.Models
+﻿using ROBOMVC.Util;
+
+namespace ROBOMVC.Models
 {
     public class RoboViewModel
     {
-        public CabecaViewModel Cabeca { get; set; }
-        public BracoViewModel BracoEsquerdo { get; set; }
-        public BracoViewModel BracoDireito { get; set; }
+        public HeadViewModel Head { get; set; }
+        public ArmViewModel LeftArm { get; set; }
+        public ArmViewModel RightArm { get; set; }
     }
 
-    public class CabecaViewModel
+    public class HeadViewModel
     {
-        public RotacaoCabeca Rotacao { get; set; }
-        public InclinacaoCabeca Inclinacao { get; set; }
+        public HeadRotation Rotation { get; set; }
+        public HeadTilt Tilt { get; set; }
     }
 
-    public class BracoViewModel
+    public class ArmViewModel
     {
-        public Cotovelo Cotovelo { get; set; }
-        public Pulso Pulso { get; set; }
+        public Elbow Elbow { get; set; }
+        public Wrist Wrist { get; set; }
     }
 
-    public enum Cotovelo
+    public enum Elbow
     {
-        EmRepouso,
-        LevementeContraido,
-        Contraido,
-        FortementeContraido
+        [Display("Em repouso")]
+        AtRest = 0,
+
+        [Display("Levemente contraído")]
+        SlightlyContracted = 1,
+
+        [Display("Contraído")]
+        Contracted = 2,
+
+        [Display("Fortemente contraído")]
+        StronglyContracted = 3
     }
 
-    public enum Pulso
+    public enum Wrist
     {
-        RotacaoParaMenos90,
-        RotacaoParaMenos45,
-        EmRepouso,
-        RotacaoPara45,
-        RotacaoPara90,
-        RotacaoPara135,
-        RotacaoPara180
+        [Display("Rotação para menos 90")]
+        RotationToMinus90 = 0,
+
+        [Display("Rotação para menos 45")]
+        RotationToMinus45 = 1,
+
+        [Display("Em repouso")]
+        AtRest = 2,
+
+        [Display("Rotação para 45")]
+        RotationTo45 = 3,
+
+        [Display("Rotação para 90")]
+        RotationTo90 = 4,
+
+        [Display("Rotação para 135")]
+        RotationTo135 = 5,
+
+        [Display("Rotação para 180")]
+        RotationTo180 = 6
     }
 
-    public enum RotacaoCabeca
+    public enum HeadRotation
     {
-        RotacaoMenos90,
-        RotacaoMenos45,
-        EmRepouso,
-        RotacaoPara45,
-        RotacaoPara90
+        [Display("Rotação para menos 90")]
+        RotationToMinus90 = 0,
+
+        [Display("Rotação para menos 45")]
+        RotationToMinus45 = 1,
+
+        [Display("Em repouso")]
+        AtRest = 2,
+
+        [Display("Rotação para 45")]
+        RotationTo45 = 3,
+
+        [Display("Rotação para 90")]
+        RotationTo90 = 4
     }
 
-    public enum InclinacaoCabeca
+    public enum HeadTilt
     {
-        ParaCima,
-        EmRepouso,
-        ParaBaixo
+        [Display("Para cima")]
+        Upward = 0,
+
+        [Display("Em repouso")]
+        AtRest = 1,
+
+        [Display("Para baixo")]
+        Downward = 2
     }
 
 }

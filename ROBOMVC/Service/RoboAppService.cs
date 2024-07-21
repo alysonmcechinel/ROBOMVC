@@ -4,63 +4,61 @@ namespace ROBOMVC.Service;
 
 public class RoboAppService
 {
-    public RoboViewModel EstadoIncialRobo() =>
+    public RoboViewModel InitialRoboState() =>
         new RoboViewModel
         {
-            Cabeca = new CabecaViewModel { Rotacao = RotacaoCabeca.EmRepouso, Inclinacao = InclinacaoCabeca.EmRepouso },
-            BracoEsquerdo = new BracoViewModel { Cotovelo = Cotovelo.EmRepouso, Pulso = Pulso.EmRepouso },
-            BracoDireito = new BracoViewModel { Cotovelo = Cotovelo.EmRepouso, Pulso = Pulso.EmRepouso }
+            Head = new HeadViewModel { Rotation = HeadRotation.AtRest, Tilt = HeadTilt.AtRest },
+            LeftArm = new ArmViewModel { Elbow = Elbow.AtRest, Wrist = Wrist.AtRest },
+            RightArm = new ArmViewModel { Elbow = Elbow.AtRest, Wrist = Wrist.AtRest }
         };
     
 
-    public string ValidarMovimento(RoboViewModel estadoAtual, RoboViewModel viewModel)
+    public string ValidateMovement(RoboViewModel currentState, RoboViewModel viewModel)
     {
         // Verificar se o Pulso pode ser movimentado
-        if (viewModel.BracoEsquerdo.Pulso != estadoAtual.BracoEsquerdo.Pulso ||
-            viewModel.BracoDireito.Pulso != estadoAtual.BracoDireito.Pulso)
+        if (viewModel.LeftArm.Wrist != currentState.LeftArm.Wrist ||
+            viewModel.RightArm.Wrist != currentState.RightArm.Wrist)
         {
-            if (viewModel.BracoEsquerdo.Cotovelo != Cotovelo.FortementeContraido ||
-                viewModel.BracoDireito.Cotovelo != Cotovelo.FortementeContraido)
+            if (viewModel.LeftArm.Elbow != Elbow.StronglyContracted ||
+                viewModel.RightArm.Elbow != Elbow.StronglyContracted)
             {
-                return "O Pulso só pode ser movimentado caso o Cotovelo esteja Fortemente Contraído.";
+                return string.Format("O Pulso só pode ser movimentado caso o cotovelo esteja fortemente contraído.");
             }
         }
 
         // Verificar se a Cabeça pode ser rotacionada
-        if (viewModel.Cabeca.Rotacao != estadoAtual.Cabeca.Rotacao &&
-            viewModel.Cabeca.Inclinacao == InclinacaoCabeca.ParaBaixo)
+        if (viewModel.Head.Rotation != currentState.Head.Rotation &&
+            viewModel.Head.Tilt == HeadTilt.Downward)
         {
-            return "A Cabeça não pode ser rotacionada se a Inclinação estiver Para Baixo.";
+            return string.Format("A cabeça não pode ser rotacionada se a inclinação estiver para baixo.");
         }
 
         // Verificar a progressão dos estados
-        if (!VerificarProgressoDeEstados(estadoAtual, viewModel))
-        {
-            return "A progressão dos estados deve ser crescente ou decrescente, sem pular estados.";
-        }
+        if (!CheckStateProgress(currentState, viewModel))
+            return string.Format("A progressão dos estados deve ser crescente ou decrescente, sem pular estados.");
 
-        return null;
+        return string.Empty;
     }
 
     // Privates
 
-    private bool VerificarProgressoDeEstados(RoboViewModel estadoAtual, RoboViewModel novoEstado)
+    private bool CheckStateProgress(RoboViewModel currentState, RoboViewModel newState)
     {
-        return VerificarProgressaoDeEstado(estadoAtual.Cabeca.Rotacao, novoEstado.Cabeca.Rotacao) &&
-               VerificarProgressaoDeEstado(estadoAtual.Cabeca.Inclinacao, novoEstado.Cabeca.Inclinacao) &&
-               VerificarProgressaoDeEstado(estadoAtual.BracoEsquerdo.Cotovelo, novoEstado.BracoEsquerdo.Cotovelo) &&
-               VerificarProgressaoDeEstado(estadoAtual.BracoEsquerdo.Pulso, novoEstado.BracoEsquerdo.Pulso) &&
-               VerificarProgressaoDeEstado(estadoAtual.BracoDireito.Cotovelo, novoEstado.BracoDireito.Cotovelo) &&
-               VerificarProgressaoDeEstado(estadoAtual.BracoDireito.Pulso, novoEstado.BracoDireito.Pulso);
+        return CheckStateProgression(currentState.Head.Rotation, newState.Head.Rotation) &&
+               CheckStateProgression(currentState.Head.Tilt, newState.Head.Tilt) &&
+               CheckStateProgression(currentState.LeftArm.Elbow, newState.LeftArm.Elbow) &&
+               CheckStateProgression(currentState.LeftArm.Wrist, newState.LeftArm.Wrist) &&
+               CheckStateProgression(currentState.RightArm.Elbow, newState.RightArm.Elbow) &&
+               CheckStateProgression(currentState.RightArm.Wrist, newState.RightArm.Wrist);
     }
 
-    private bool VerificarProgressaoDeEstado<T>(T estadoAtual, T novoEstado) where T : Enum
+    private bool CheckStateProgression<T>(T currentState, T newState) where T : Enum
     {
         var estados = Enum.GetValues(typeof(T)).Cast<T>().ToList();
-        var indexAtual = estados.IndexOf(estadoAtual);
-        var indexNovo = estados.IndexOf(novoEstado);
+        var currentIndex = estados.IndexOf(currentState);
+        var newIndex = estados.IndexOf(newState);
 
-        return Math.Abs(indexAtual - indexNovo) <= 1;
+        return Math.Abs(currentIndex - newIndex) <= 1;
     }
 
 }

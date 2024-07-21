@@ -9,7 +9,7 @@ namespace ROBOMVC.Controllers;
 public class MovController : Controller
 {
     private readonly RoboAppService _roboAppService;
-    private const string RoboSessionKey = "RoboEstado";
+    private const string RoboSessionKey = "RobotState";
 
     public MovController(RoboAppService roboAppService)
     {
@@ -22,7 +22,7 @@ public class MovController : Controller
         var viewModel = HttpContext.Session.Get<RoboViewModel>(RoboSessionKey);
 
         if (viewModel == null)
-            viewModel = _roboAppService.EstadoIncialRobo();
+            viewModel = _roboAppService.InitialRoboState();
 
         HttpContext.Session.Set(RoboSessionKey, viewModel);
 
@@ -30,46 +30,46 @@ public class MovController : Controller
     }
 
     [HttpGet]
-    public IActionResult EnviarComandos([FromQuery] RoboViewModel viewModel)
+    public IActionResult SendCommands([FromQuery] RoboViewModel viewModel)
     {
         if (viewModel == null)
             return BadRequest("Dados inválidos");
 
-        var estadoAtual = HttpContext.Session.Get<RoboViewModel>(RoboSessionKey);
+        var currentState = HttpContext.Session.Get<RoboViewModel>(RoboSessionKey);
 
-        var erro = _roboAppService.ValidarMovimento(estadoAtual, viewModel);
-        if (erro != null)
+        var erro = _roboAppService.ValidateMovement(currentState, viewModel);
+        if (!string.IsNullOrEmpty(erro))
         {
-            viewModel = _roboAppService.EstadoIncialRobo();
+            viewModel = _roboAppService.InitialRoboState();
             HttpContext.Session.Set(RoboSessionKey, viewModel);
             return BadRequest(erro);
         }            
 
         HttpContext.Session.Set(RoboSessionKey, viewModel);
 
-        return AtualizarComandos(viewModel);
+        return UpdateCommands(viewModel);
     }
 
     // Privates
 
-    private IActionResult AtualizarComandos(RoboViewModel viewModel)
+    private IActionResult UpdateCommands(RoboViewModel viewModel)
     {
         return Ok(new
         {
-            Cabeca = new
+            Head = new
             {
-                Rotacao = viewModel.Cabeca.Rotacao,
-                Inclinacao = viewModel.Cabeca.Inclinacao
+                Rotation = viewModel.Head.Rotation,
+                Tilt = viewModel.Head.Tilt
             },
-            BracoEsquerdo = new
+            LeftArm = new
             {
-                Cotovelo = viewModel.BracoEsquerdo.Cotovelo,
-                Pulso = viewModel.BracoEsquerdo.Pulso
+                Elbow = viewModel.LeftArm.Elbow,
+                Wrist = viewModel.LeftArm.Wrist
             },
-            BracoDireito = new
+            RightArm = new
             {
-                Cotovelo = viewModel.BracoDireito.Cotovelo,
-                Pulso = viewModel.BracoDireito.Pulso
+                Elbow = viewModel.RightArm.Elbow,
+                Wrist = viewModel.RightArm.Wrist
             }
         });
     }

@@ -1,6 +1,4 @@
-﻿const form = document.getElementById('roboForm');
-
-document.addEventListener('DOMContentLoaded', function () {
+﻿document.addEventListener('DOMContentLoaded', function () {
     const form = document.getElementById('roboForm');
 
     form.addEventListener('change', function (event) {
@@ -13,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 queryParams.append(key, value);
             });
 
-            fetch(`/Mov/EnviarComandos?${queryParams.toString()}`, {
+            fetch(`/Mov/SendCommands?${queryParams.toString()}`, {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json'
@@ -29,18 +27,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert('Comando enviado com sucesso!');
                 })
                 .catch(error => {
-                    // Simula quebras de linha usando '\n' e destaca "sistema corrompido!!" usando asteriscos
-                    alert(`Erro:\n${error.message}\nSistema corrompido!!`);
-                    location.reload(); // Reinicia a página para o estado inicial
+                    alert(`Erro:\n${error.message}\n\nSistema corrompido.\nOs comandos serão reiniciados.`);
+                    location.reload();
                 });
         }
     });
-
-    // Initialize all dropdowns to their default "Em Repouso" state
+    
     const initializeDropdowns = () => {
         const dropdowns = form.querySelectorAll('select');
         dropdowns.forEach(dropdown => {
-            dropdown.value = 'EmRepouso';
+            dropdown.value = 'AtRest';
         });
     };
 
