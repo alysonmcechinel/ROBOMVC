@@ -1,0 +1,88 @@
+﻿@page
+@model RoboViewModel
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle do R.O.B.O.</title>
+    <link rel="stylesheet" href="~/css/robo.css">
+</head>
+
+<body>
+    <h1>Controle do R.O.B.O.</h1>
+
+    <form id="roboForm">
+        <h2>Comandos</h2>
+
+        <fieldset>
+            <legend>Cabeca</legend>
+            <div>
+                <label for="Rotacao">Rotação:</label>
+                <select id="Rotacao" name="Cabeca.Rotacao">
+                    @foreach (var rotacao in Enum.GetValues(typeof(RotacaoCabeca)))
+                    {
+                        <option value="@rotacao">@rotacao</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label for="Inclinacao">Inclinação:</label>
+                <select id="Inclinacao" name="Cabeca.Inclinacao">
+                    @foreach (var inclinacao in Enum.GetValues(typeof(InclinacaoCabeca)))
+                    {
+                        <option value="@inclinacao">@inclinacao</option>
+                    }
+                </select>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Braço Esquerdo</legend>
+            <div>
+                <label for="CotoveloEsquerdo">Cotovelo:</label>
+                <select id="CotoveloEsquerdo" name="BracoEsquerdo.Cotovelo">
+                    @foreach (var cotovelo in Enum.GetValues(typeof(Cotovelo)))
+                    {
+                        <option value="@cotovelo">@cotovelo</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label for="PulsoEsquerdo">Pulso:</label>
+                <select id="PulsoEsquerdo" name="BracoEsquerdo.Pulso">
+                    @foreach (var pulso in Enum.GetValues(typeof(Pulso)))
+                    {
+                        <option value="@pulso">@pulso</option>
+                    }
+                </select>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Braço Direito</legend>
+            <div>
+                <label for="CotoveloDireito">Cotovelo:</label>
+                <select id="CotoveloDireito" name="BracoDireito.Cotovelo">
+                    @foreach (var cotovelo in Enum.GetValues(typeof(Cotovelo)))
+                    {
+                        <option value="@cotovelo">@cotovelo</option>
+                    }
+                </select>
+            </div>
+            <div>
+                <label for="PulsoDireito">Pulso:</label>
+                <select id="PulsoDireito" name="BracoDireito.Pulso">
+                    @foreach (var pulso in Enum.GetValues(typeof(Pulso)))
+                    {
+                        <option value="@pulso">@pulso</option>
+                    }
+                </select>
+            </div>
+        </fieldset>
+    </form>
+
+    <script src="~/js/robo.js"></script>
+</body>
+</html>
