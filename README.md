@@ -9,6 +9,7 @@ Este projeto demonstra um controlador de robô utilizando a arquitetura MVC, Ses
   <li>RESTful</li>
   <li>Session</li>
   <li>C#</li>
+  <li>Testes unitários (xUnit)</li>
   <li>HTML</li>
   <li>CSS</li>
   <li>JS</li>  
