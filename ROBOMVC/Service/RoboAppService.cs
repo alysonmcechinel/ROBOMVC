@@ -15,27 +15,19 @@ public class RoboAppService
 
     public string ValidateMovement(RoboViewModel currentState, RoboViewModel viewModel)
     {
-        // Verificar se o Pulso pode ser movimentado
-        if (viewModel.LeftArm.Wrist != currentState.LeftArm.Wrist ||
-            viewModel.RightArm.Wrist != currentState.RightArm.Wrist)
-        {
-            if (viewModel.LeftArm.Elbow != Elbow.StronglyContracted ||
-                viewModel.RightArm.Elbow != Elbow.StronglyContracted)
-            {
-                return string.Format("O Pulso só pode ser movimentado caso o cotovelo esteja fortemente contraído.");
-            }
-        }
-
-        // Verificar se a Cabeça pode ser rotacionada
-        if (viewModel.Head.Rotation != currentState.Head.Rotation &&
-            viewModel.Head.Tilt == HeadTilt.Downward)
-        {
-            return string.Format("A cabeça não pode ser rotacionada se a inclinação estiver para baixo.");
-        }
-
-        // Verificar a progressão dos estados
         if (!CheckStateProgress(currentState, viewModel))
-            return string.Format("A progressão dos estados deve ser crescente ou decrescente, sem pular estados.");
+            return ValidationMessages.StateProgress;
+
+        if (viewModel.LeftArm.Wrist != currentState.LeftArm.Wrist)
+            if (viewModel.LeftArm.Elbow != Elbow.StronglyContracted)
+                return ValidationMessages.WristMovement;
+
+        if (viewModel.RightArm.Wrist != currentState.RightArm.Wrist)
+            if (viewModel.RightArm.Elbow != Elbow.StronglyContracted)
+                return ValidationMessages.WristMovement;
+
+        if (viewModel.Head.Rotation != currentState.Head.Rotation && viewModel.Head.Tilt == HeadTilt.Downward)
+            return ValidationMessages.HeadRotation;
 
         return string.Empty;
     }
@@ -59,5 +51,12 @@ public class RoboAppService
         var newIndex = estados.IndexOf(newState);
 
         return Math.Abs(currentIndex - newIndex) <= 1;
+    }
+
+    private class ValidationMessages
+    {
+        public const string StateProgress = "A progressão dos estados deve ser crescente ou decrescente, sem pular estados.";
+        public const string WristMovement = "O Pulso só pode ser movimentado caso o cotovelo esteja fortemente contraído.";
+        public const string HeadRotation = "A cabeça não pode ser rotacionada se a inclinação estiver para baixo.";
     }
 }

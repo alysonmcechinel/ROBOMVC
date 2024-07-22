@@ -29,6 +29,7 @@ public class MovController : Controller
         return View(viewModel);
     }
 
+    [HttpPost]
     public IActionResult SendCommands([FromQuery] RoboViewModel viewModel)
     {
         if (viewModel == null)

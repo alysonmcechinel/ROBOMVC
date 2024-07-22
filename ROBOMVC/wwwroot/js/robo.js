@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             fetch(`/Mov/SendCommands?${queryParams.toString()}`, {
-                method: 'GET',
+                method: 'POST',
                 headers: {
                     'Accept': 'application/json'
                 }

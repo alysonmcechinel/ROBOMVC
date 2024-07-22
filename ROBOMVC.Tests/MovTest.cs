@@ -13,7 +13,7 @@ namespace ROBOMVC.Tests
             var currentState = _service.InitialRoboState();
             var newState = new RoboViewModel
             {
-                LeftArm = { Elbow = Elbow.SlightlyContracted, Wrist = Wrist.RotationTo90 }
+                RightArm = { Elbow = Elbow.SlightlyContracted, Wrist = Wrist.RotationToMinus45 }
             };
 
             var error = _service.ValidateMovement(currentState, newState);
@@ -30,7 +30,7 @@ namespace ROBOMVC.Tests
             };
             var newState = new RoboViewModel
             {
-                LeftArm = { Elbow = Elbow.StronglyContracted, Wrist = Wrist.RotationTo90 }
+                LeftArm = { Elbow = Elbow.StronglyContracted, Wrist = Wrist.RotationTo45 }
             };
 
             var error = _service.ValidateMovement(currentState, newState);
