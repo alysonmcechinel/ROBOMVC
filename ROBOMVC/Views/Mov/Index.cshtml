@@ -1,25 +1,25 @@
-﻿@page
+﻿@model RoboViewModel
 @using ROBOMVC.Util
-@model RoboViewModel
 
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Controle do R.O.B.O.</title>
+        <title>Central de controle do R.O.B.O.</title>
         <link rel="stylesheet" href="~/css/robo.css">
     </head>
 
     <body>
-        <h1>Controle do R.O.B.O.</h1>
-    
+        <h1>Central de controle do R.O.B.O.</h1>
+        
         <form id="roboForm">
-            <h2>Comandos</h2>
+            <h2>Status dos comandos</h2>
     
             <fieldset>
                 <legend>Cabeca</legend>
                 <div>
+                    
                     <label for="Rotation">Rotação:</label>
                     <select id="Rotation" name="Head.Rotation">
                         @foreach (var rotation in Enum.GetValues(typeof(HeadRotation)).Cast<HeadRotation>())
@@ -52,7 +52,7 @@
                 </div>
                 <div>
                     <label for="LeftWrist">Pulso:</label>
-                <select id="LeftWrist" name="LeftArm.Wrist">
+                    <select id="LeftWrist" name="LeftArm.Wrist">
                         @foreach (var wrist in Enum.GetValues(typeof(Wrist)).Cast<Wrist>())
                         {
                             <option value="@wrist">@wrist.GetDisplayName()</option>
@@ -81,8 +81,8 @@
                         }
                     </select>
                 </div>
-            </fieldset>
-        </form>
+            </fieldset>        
+        </form>        
     
         <script src="~/js/robo.js"></script>
     </body>

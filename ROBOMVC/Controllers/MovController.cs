@@ -29,7 +29,6 @@ public class MovController : Controller
         return View(viewModel);
     }
 
-    [HttpGet]
     public IActionResult SendCommands([FromQuery] RoboViewModel viewModel)
     {
         if (viewModel == null)
@@ -46,7 +45,7 @@ public class MovController : Controller
         }            
 
         HttpContext.Session.Set(RoboSessionKey, viewModel);
-
+        
         return UpdateCommands(viewModel);
     }
 

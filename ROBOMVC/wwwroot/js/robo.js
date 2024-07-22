@@ -1,5 +1,6 @@
-﻿document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('roboForm');
+﻿var form = document.getElementById('roboForm');
+
+document.addEventListener('DOMContentLoaded', function () {
 
     form.addEventListener('change', function (event) {
         if (event.target.tagName === 'SELECT') {
@@ -17,22 +18,22 @@
                     'Accept': 'application/json'
                 }
             })
-                .then(response => {
-                    if (!response.ok) {
-                        return response.text().then(text => { throw new Error(text); });
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    alert('Comando enviado com sucesso!');
-                })
-                .catch(error => {
-                    alert(`Erro:\n${error.message}\n\nSistema corrompido.\nOs comandos serão reiniciados.`);
-                    location.reload();
-                });
+            .then(response => {
+                if (!response.ok) {
+                    return response.text().then(text => { throw new Error(text); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Comando enviado e status atualizado com sucesso!');
+            })
+            .catch(error => {
+                alert(`Erro:\n${error.message}\n\nSistema corrompido.\nOs comandos serão reiniciados.`);
+                location.reload();
+            });
         }
     });
-    
+
     const initializeDropdowns = () => {
         const dropdowns = form.querySelectorAll('select');
         dropdowns.forEach(dropdown => {

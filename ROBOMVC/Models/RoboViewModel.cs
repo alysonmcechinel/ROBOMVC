@@ -4,21 +4,21 @@ namespace ROBOMVC.Models
 {
     public class RoboViewModel
     {
-        public HeadViewModel Head { get; set; }
-        public ArmViewModel LeftArm { get; set; }
-        public ArmViewModel RightArm { get; set; }
+        public HeadViewModel Head { get; set; } = new HeadViewModel();
+        public ArmViewModel LeftArm { get; set; } = new ArmViewModel();
+        public ArmViewModel RightArm { get; set; } = new ArmViewModel();
     }
 
     public class HeadViewModel
     {
-        public HeadRotation Rotation { get; set; }
-        public HeadTilt Tilt { get; set; }
+        public HeadRotation Rotation { get; set; } = HeadRotation.AtRest;
+        public HeadTilt Tilt { get; set; } = HeadTilt.AtRest;
     }
 
     public class ArmViewModel
     {
-        public Elbow Elbow { get; set; }
-        public Wrist Wrist { get; set; }
+        public Elbow Elbow { get; set; } = Elbow.AtRest;
+        public Wrist Wrist { get; set; } = Wrist.AtRest;
     }
 
     public enum Elbow

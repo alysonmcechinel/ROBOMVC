@@ -60,6 +60,4 @@ public class RoboAppService
 
         return Math.Abs(currentIndex - newIndex) <= 1;
     }
-
 }
-
